@@ -324,8 +324,6 @@ fn on_key_press(
     galley: &Galley,
     key: Key,
 ) -> Option<CCursor> {
-    // eprintln!("on_key_press before: '{}', cursor at {}", text, cursor);
-
     match key {
         Key::Backspace if cursor.ccursor.index > 0 => {
             *cursor = galley.from_ccursor(cursor.ccursor - 1);
@@ -351,12 +349,11 @@ fn on_key_press(
         Key::Enter => unreachable!("Should have been handled earlier"),
 
         Key::Home => {
-            // To start of line:
-            *cursor = galley.cursor_begin_of_line(cursor);
+            *cursor = galley.cursor_begin_of_row(cursor);
             None
         }
         Key::End => {
-            *cursor = galley.cursor_end_of_line(cursor);
+            *cursor = galley.cursor_end_of_row(cursor);
             None
         }
         Key::Left => {
@@ -368,15 +365,13 @@ fn on_key_press(
             None
         }
         Key::Up => {
-            *cursor = galley.cursor_up_one_line(cursor);
+            *cursor = galley.cursor_up_one_row(cursor);
             None
         }
         Key::Down => {
-            *cursor = galley.cursor_down_one_line(cursor);
+            *cursor = galley.cursor_down_one_row(cursor);
             None
         }
         _ => None,
     }
-
-    // eprintln!("on_key_press after:  '{}', cursor at {}\n", text, cursor);
 }
